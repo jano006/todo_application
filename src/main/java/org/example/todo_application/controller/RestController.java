@@ -60,7 +60,7 @@ public class RestController {
     public ResponseEntity<String> updateDeadline(@RequestParam Long todoId,
                                                  @RequestParam LocalDate newLocalDate) {
         todoService.updateTodoDeadline(todoId, newLocalDate);
-        String message = (newLocalDate == null) ? "Deadline is cleared" : String.format("Deadline adjusted to: %s", newLocalDate.toString());
+        String message = (newLocalDate == null) ? "Deadline is cleared" : String.format("Deadline adjusted to: %s", newLocalDate);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
