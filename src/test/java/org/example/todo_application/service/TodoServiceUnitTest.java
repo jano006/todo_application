@@ -1,6 +1,6 @@
 package org.example.todo_application.service;
 
-
+import org.example.todo_application.dto.TodoFrontendDto;
 import org.example.todo_application.dto.TodoSaveDto;
 import org.example.todo_application.entity.Priority;
 import org.example.todo_application.entity.Todo;
@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -79,27 +81,58 @@ public class TodoServiceUnitTest {
             todoService.saveTodo(todoSaveDto);
         });
         Assertions.assertEquals("Deadline cannot be in past", exception.getMessage());
-        // optional but good and practical
         verify(todoRepository, times(0)).save(any(Todo.class));
+    }
+
+    @Test
+    public void testGetFrontendTodoDtoList() {
+        // Arrange
+        Todo todo1 = Todo.builder()
+                .todoId(1L)
+                .name("Todo 1")
+                .build();
+        Todo todo2 = Todo.builder()
+                .todoId(2L)
+                .name("Todo 2")
+                .build();
+
+        List<Todo> todoList = new ArrayList<>(List.of(todo1, todo2));
+
+        when(todoRepository.findAll()).thenReturn(todoList);
+
+        when(todoMapper.entityToFrontEndDto(todo1)).thenReturn(
+                new TodoFrontendDto(todo1.getTodoId(), todo1.getName(), "Not finished", "No deadline", "No priority"));
+        when(todoMapper.entityToFrontEndDto(todo2)).thenReturn(
+                new TodoFrontendDto(todo2.getTodoId(), todo2.getName(), "Not finished", "No deadline", "No priority"));
+
+
+        // Act
+        List<TodoFrontendDto> dtoList = todoService.getFrontedTodoDtoList();
+
+        // Assert
+        Assertions.assertEquals("Todo 1", dtoList.get(0).getName());
+        Assertions.assertEquals("Todo 2", dtoList.get(1).getName());
+
+        verify(todoRepository, times(1)).findAll();
     }
 
     @Test
     public void testUpdateTodoNameWithValidId() {
         // Arrange
-        Todo existingTodo = Todo.builder()
+        Todo todo = Todo.builder()
                 .todoId(1L)
                 .name("Example todo")
                 .build();
 
-        when(todoRepository.findById(1L)).thenReturn(Optional.of(existingTodo));
-        when(todoRepository.save(existingTodo)).thenReturn(existingTodo);
+        when(todoRepository.findById(todo.getTodoId())).thenReturn(Optional.of(todo));
+        when(todoRepository.save(todo)).thenReturn(todo);
 
         // Act
-        Todo updatedTodo = todoService.updateTodoName(existingTodo.getTodoId(), "New todo");
+        Todo updatedTodo = todoService.updateTodoName(todo.getTodoId(), "New todo");
 
         // Assert
         Assertions.assertEquals("New todo", updatedTodo.getName());
-        verify(todoRepository, times(1)).save(existingTodo);
+        verify(todoRepository, times(1)).save(todo);
 
     }
 
@@ -194,6 +227,26 @@ public class TodoServiceUnitTest {
     }
 
     @Test
+    public void testUpdateTodoDeadlineToNull() {
+        // Arrange
+        Todo todo = Todo.builder()
+                .todoId(1L)
+                .name("Example todo")
+                .deadline(today.plusDays(3))
+                .build();
+
+        when(todoRepository.findById(todo.getTodoId())).thenReturn(Optional.of(todo));
+        when(todoRepository.save(todo)).thenReturn(todo);
+
+        // Act
+        Todo updatedTodo = todoService.updateTodoDeadline(todo.getTodoId(), null);
+
+        // Assert
+        Assertions.assertNull(updatedTodo.getDeadline());
+        verify(todoRepository, times(1)).save(todo);
+    }
+
+    @Test
     public void testUpdateTodoDeadlineWithInvalidId() {
         // Arrange
         long nonExistentTodoId = 99L;
@@ -227,6 +280,26 @@ public class TodoServiceUnitTest {
     }
 
     @Test
+    public void testUpdateTodoPriorityToNull() {
+        // Arrange
+        Todo todo = Todo.builder()
+                .todoId(1L)
+                .name("Example todo")
+                .priority(Priority.LOW)
+                .build();
+
+        when(todoRepository.findById(todo.getTodoId())).thenReturn(Optional.of(todo));
+        when(todoRepository.save(todo)).thenReturn(todo);
+
+        // Act
+        Todo updatedTodo = todoService.updateTodoPriority(todo.getTodoId(), null);
+
+        // Assert
+        Assertions.assertNull(updatedTodo.getPriority());
+        verify(todoRepository, times(1)).save(todo);
+    }
+
+    @Test
     public void testUpdateTodoPriorityWithInvalidId() {
         // Arrange
         long nonExistentTodoId = 99L;
@@ -256,6 +329,7 @@ public class TodoServiceUnitTest {
         verify(todoRepository, times(1)).findById(todo.getTodoId());
         verify(todoRepository, times(1)).delete(todo);
     }
+
 
     @Test
     public void testDeleteTodoWithInvalidId() {

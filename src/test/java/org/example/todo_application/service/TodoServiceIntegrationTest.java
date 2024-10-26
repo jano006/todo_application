@@ -167,6 +167,18 @@ TodoServiceIntegrationTest {
     }
 
     @Test
+    public void testUpdateTodoDeadlineToNull() {
+        TodoSaveDto todoSaveDto = TodoSaveDto.builder()
+                .name("Example todo")
+                .deadline(today.plusDays(1))
+                .build();
+        Todo todo = todoService.saveTodo(todoSaveDto);
+
+        Todo updatedTodo = todoService.updateTodoDeadline(todo.getTodoId(), null);
+        Assertions.assertNull(updatedTodo.getDeadline());
+    }
+
+    @Test
     public void testUpdateTodoDeadlineWithInvalidId() {
         long nonExistentTodoId = 99L;
         Exception exception = Assertions.assertThrows(Exception.class,
@@ -198,6 +210,17 @@ TodoServiceIntegrationTest {
         Todo updatedTodo = todoService.updateTodoPriority(todo.getTodoId(), Priority.MEDIUM);
         Assertions.assertEquals(Priority.MEDIUM, updatedTodo.getPriority());
         Assertions.assertNotEquals(todo.getPriority(), updatedTodo.getPriority());
+    }
+    @Test
+    public void testUpdateTodoPriorityToNull() {
+        TodoSaveDto todoSaveDto = TodoSaveDto.builder()
+                .name("Example todo")
+                .priority(Priority.LOW)
+                .build();
+        Todo todo = todoService.saveTodo(todoSaveDto);
+
+        Todo updatedTodo = todoService.updateTodoPriority(todo.getTodoId(), null);
+        Assertions.assertNull(updatedTodo.getPriority());
     }
 
     @Test
