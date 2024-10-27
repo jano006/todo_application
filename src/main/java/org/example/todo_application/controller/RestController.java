@@ -46,6 +46,9 @@ public class RestController {
     @PatchMapping("/updateName")
     public ResponseEntity<String> updateName(@RequestParam Long todoId,
                                              @RequestParam String newName) {
+        if (newName.length() > 100) {
+            return new ResponseEntity<>("Name cannot exceed 100 characters", HttpStatus.BAD_REQUEST);
+        }
         todoService.updateTodoName(todoId, newName);
         return new ResponseEntity<>(String.format("Todo renamed to: %s", newName), HttpStatus.OK);
     }
