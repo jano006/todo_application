@@ -14,10 +14,10 @@ The app allows users to create, update, delete, and view a list of todo items. E
 
 ## Features
 - **Create, Read, Update, Delete (CRUD) Operations**: Manage todo items with standard CRUD operations.
-- **Task Completion Status**: Mark tasks as completed or not completed.
-- **Priority Levels**: Set priority levels (e.g., Low, Medium, High) for each todo item.
-- **Due Date**: Option to add a due date for each task.
-- **Error Handling**: Custom error pages for validation failures and other issues.
+- **Task Completion Status**: Mark tasks as finished or not finished.
+- **Priority Levels**: Set priority levels (e.g., Low, Medium, High, or No priority) for each todo item.
+- **Deadline**: Option to add/change/clear deadline for each task.
+- **Error Handling**: Custom error page for specific errors such as deadline in the past, while inline messages handle other validation issues (like required field for todo name).
 - **Thymeleaf Frontend**: User interface (UI) built with Thymeleaf. Todo items have inline editing.
 
 ## Architecture
