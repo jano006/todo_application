@@ -22,10 +22,10 @@ The app allows users to create, update, delete, and view a list of todo items. E
 
 ## Architecture
 The application is structured into several layers:
-- **Controller**: Handles HTTP requests and responses. There are two controllers:
+- **Controller**: Handles HTTP requests, responses, and validations. There are two controllers:
     - `MvcController` for handling frontend interactions via Thymeleaf.
     - `RestController` (primarily for Postman testing and potential future frontend) for API interactions.
-- **Service Layer**: Contains business logic for managing todo items, including validation and CRUD operations.
+- **Service Layer**: Contains business logic for managing todo items, focusing on CRUD operations.
 - **Repository Layer**: Uses Spring Data JPA to handle database interactions.
 - **DTOs (Data Transfer Objects)**: Used for transferring data between the layers, especially for validation and simplifying the data sent to the frontend.
     - `TodoSaveDto`: Used to handle data for creating, with validation rules.
