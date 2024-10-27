@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo app</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="form-container">
+    <form id="todoForm" th:action="@{/createTodo}" method="post" th:object="${todoSaveDto}">
+        <div class="form-row">
+            <div class="form-item">
+                <label for="name">Task Name:<span class="star">*</span> (max. 100 characters)</label>
+                <input type="text" id="name" th:field="*{name}" placeholder="Enter task name" required>
+            </div>
+            <div class="form-item">
+                <label for="deadline">Deadline (Optional):</label>
+                <input type="date" id="deadline" th:field="*{deadline}">
+                <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}">Invalid deadline</div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-item">
+                <label for="priority">Priority (Optional):</label>
+                <select id="priority" th:field="*{priority}">
+                    <option th:value="null" th:text="'None'">None</option>
+                    <option th:value="LOW" th:text="'Low'"></option>
+                    <option th:value="MEDIUM" th:text="'Medium'"></option>
+                    <option th:value="HIGH" th:text="'High'"></option>
+                </select>
+                <div th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">Please select a priority</div>
+            </div>
+            <div class="form-item button-container">
+                <button type="submit">Create Todo</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<table class="todo-table">
+    <thead>
+    <tr>
+        <td>Task</td>
+        <td>Status</td>
+        <td>Priority</td>
+        <td>Deadline</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="todo: ${todos}">
+        <td class="task-name">
+            <span class="editable-task" th:text="${todo.getName()}">Task</span>
+            <span class="edit-icon">🖉</span>
+        </td>
+        <td>
+            <span class="status-text" th:attr="data-todo-id=${todo.todoId}" th:text="${todo.isDone}"></span>
+            <span class="status-icon" title="Toggle Status" th:attr="data-todo-id=${todo.todoId}">🔄</span>
+        </td>
+
+
+        <td>
+            <select class="priority-select" th:attr="data-todo-id=${todo.todoId}">
+                <option value="null" th:selected="${todo.getPriority() == 'No priority'}">No priority</option>
+                <option value="LOW" th:selected="${todo.getPriority() == 'LOW'}">Low</option>
+                <option value="MEDIUM" th:selected="${todo.getPriority() == 'MEDIUM'}">Medium</option>
+                <option value="HIGH" th:selected="${todo.getPriority() == 'HIGH'}">High</option>
+            </select>
+        </td>
+
+
+        <td>
+            <input type="date" class="deadline-input" th:attr="data-todo-id=${todo.todoId}"
+                   th:value="${todo.deadline != 'No deadline' ? todo.deadline : ''}">
+
+            <button type="button" class="clear-deadline-btn" title="Clear Deadline" th:attr="data-todo-id=${todo.todoId}">
+                Clear
+            </button>
+        </td>
+
+
+        <td>
+            <form th:action="@{/deleteTodo}" method="post">
+                <input type="hidden" name="todoId" th:value="${todo.getTodoId()}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script th:src="@{/script.js}"></script>
+</body>
+</html>

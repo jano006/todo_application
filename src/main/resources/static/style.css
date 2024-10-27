@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+.star {
+    color: red;
+    font-size: 1.0em;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    float: left;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    align-self: flex-end;
+}
+
+.form-container label {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.form-container button {
+    height: 100%;
+    padding: 10px ;
+
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #218838;
+}
+
+.todo-table {
+    width: calc(100% - 20px);
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.todo-table thead {
+    background-color: #333;
+    color: white;
+}
+
+.todo-table td,
+.todo-table th {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.todo-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.todo-table button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.todo-table button:hover {
+    background-color: #c82333;
+}
+
+.todo-table td.task-name {
+    max-width: 150px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.editable-task, .status-text{
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.edit-icon, .status-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+.editable-task:hover,
+.edit-icon:hover,
+.status-text:hover,
+.status-icon:hover{
+    color: #007bff;
+}
+
+
+
