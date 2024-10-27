@@ -54,6 +54,10 @@ public class MvcController {
     public String updateName(@RequestParam Long todoId,
                              @RequestParam String newName,
                              Model model) {
+        if (newName.length() > 100) {
+            model.addAttribute("errormessage", "Failed to update todo: Name cannot exceed 100 characters.");
+            return "error-page";
+        }
         try {
             todoService.updateTodoName(todoId, newName);
             return "redirect:/";
