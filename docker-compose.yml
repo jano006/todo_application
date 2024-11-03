@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: todo_application
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  app:
+    build: .
+    environment:
+      MYSQLDB_USER: myuser
+      MYSQLDB_PASSWORD: mypassword
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/todo_application
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
