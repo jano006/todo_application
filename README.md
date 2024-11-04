@@ -11,6 +11,7 @@ The app allows users to create, update, delete, and view a list of todo items. E
 - **Spring Data JPA** - Provides an easy way to integrate with a relational database.
 - **H2 Database** (for testing) / **MySQL** - Used to store and retrieve todo items.
 - **Maven** - For project management and dependency management.
+- **Docker & Docker Compose** - Used to containerize the application and manage multi-container setups including the MySQL database.
 
 ## Features
 - **Create, Read, Update, Delete (CRUD) Operations**: Manage todo items with standard CRUD operations.
@@ -35,6 +36,11 @@ The application is structured into several layers:
 By default, the application uses MySQL.
 Update application.properties with your MySQL credentials (or use Environment variables).
 For testing, it uses H2 in-memory database
+
+## Docker Configuration:
+The project includes Docker to simplify deployment and setup:
+- **Dockerfile**: Used to containerize the Java Spring application.
+- **Docker Compose**: Manages multi-container deployment, including the application and a MySQL database instance.
 
 ## Tests
 The project includes both integration tests and unit tests.
